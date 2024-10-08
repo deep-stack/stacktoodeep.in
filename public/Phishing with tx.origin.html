@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Phishing with tx.origin</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Phishing with tx.origin</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#introduction"
+    id="toc-introduction">Introduction</a></li>
+    <li><a href="#mitigation" id="toc-mitigation">Mitigation</a></li>
+    </ul>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="introduction">Introduction</h2>
+<p><strong>tx.origin</strong> is a global variable in Solidity that
+gives you the address of the original externally owned account (EOA)
+that initiated the transaction. It differs from msg.sender, which simply
+returns the address of the immediate account—whether an EOA or a
+contract—that called the function.<br></p>
+<p>If there are multiple function invocations along different contracts
+in certain chain of transactions, tx.origin will always refer to the EOA
+that initiated it, no matter the stack of contracts involved.</p>
+<p><img src="carbon-4.png" /> In attacks involving
+<strong>tx.origin</strong>, the attacker deceives the owner of a
+vulnerable contract into performing a transaction that could be a
+contract disguised as a wallet where the <strong>receive()</strong> is
+triggered having malicious code in it</p>
+<h2 id="mitigation">Mitigation</h2>
+<p>Using of <strong>msg.sender</strong> instead of
+<strong>tx.origin</strong></p>
+  <script src="index.js"></script>
+</body>
+</html>
