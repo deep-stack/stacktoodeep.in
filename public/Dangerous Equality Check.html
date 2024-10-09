@@ -59,10 +59,10 @@ disrupt the flow by force feeding <code>ETH</code> into the contract.
 There are multiple ways a smart contract can receive Ether, One of them
 is <strong>payable reveive()</strong> should be present if no then
 <strong>payable fallback()</strong></p>
-<p><img src="carbon.png" /></p>
+<p><img src="codeblock-0.png" /></p>
 <h2 id="understanding-problem">Understanding problem</h2>
 <p>Consider this Crowd funding contract for example</p>
-<p><img src="carbon-1.png" /></p>
+<p><img src="codeblock-1.png" /></p>
 <ul class="incremental">
 <li><strong>require(address(this).balancer == 100 ether, “Funding not
 reached”)</strong> the above contract relies on exact comparisons to the
@@ -72,7 +72,7 @@ to use invest function instead.</li>
 </ul>
 <h2 id="exploit">Exploit</h2>
 <p>Force feeding Ether</p>
-<p><img src="carbon-2.png" /></p>
+<p><img src="codeblock-2.png" /></p>
 <ul class="incremental">
 <li><strong>selfdestruct</strong> opcode sends all remaining Ether
 stored in the contract to a designated address.</li>

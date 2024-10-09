@@ -22,7 +22,7 @@ This post will walk through the mechanics of a reentrancy attack, and how to pro
 
 Let’s break down how the reentrancy attack works using two contracts: `Victim` and `Attack`
 
-![](code-1.png)
+![](codeblock-13.png)
 
 - **Deposit Funds**: The attacker calls the `attack()` function in the `Attack` contract. This calls `victim.deposit()` to deposit some `ETH` into the `Victim` contract. The `Victim` contract updates the attacker's balance.<br>
 - **Initial Withdrawal:** Next, the `attack()` function calls `victim.withdraw()` to withdraw the deposited `ETH` from the `Victim` contract. Here, the vulnerability is triggered because `withdraw()` sends the ETH back to the attacker before updating the balance.
@@ -37,7 +37,7 @@ Here are two methods you can use to protect your contract from reentrancy attack
 
 Refactoring your contract code in way that updates the state variables before handing over the execution control to some unknown address
 
-![](code-2.png)
+![](codeblock-114.png)
 
 By shifting the (`balances[msg.sender] = 0;`) before the external call, this way the attacker contract won't be able to take advantage of later state change since the balance will already be set to 0, preventing further withdrawals.
 
@@ -47,11 +47,11 @@ Another method is to use a **reentrancy guard**, which is a simple boolean flag 
 
 Here’s how you can implement it manually:
 
-![](code-3.png)
+![](codeblock-15.png)
 
 Alternatively, you can use **OpenZeppelin's ReentrancyGuard** to handle this for you. Simply inherit the `ReentrancyGuard` contract and use the `nonReentrant` modifier
 
-![](code-4.png)
+![](codeblock-16.png)
 
 The `nonReentrant` modifier ensures that the `withdraw()` function cannot be called again until it completes execution.
 

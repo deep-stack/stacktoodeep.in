@@ -77,7 +77,7 @@ how to protect your contracts using two common techniques:
 <h2 id="how-reentrancy-attacks-work">How Reentrancy Attacks Work</h2>
 <p>Let’s break down how the reentrancy attack works using two contracts:
 <code>Victim</code> and <code>Attack</code></p>
-<p><img src="code-1.png" /></p>
+<p><img src="codeblock-13.png" /></p>
 <ul class="incremental">
 <li><strong>Deposit Funds</strong>: The attacker calls the
 <code>attack()</code> function in the <code>Attack</code> contract. This
@@ -109,7 +109,7 @@ id="checks-effects-interactions-cei-pattern">Checks-Effects-Interactions
 <p>Refactoring your contract code in way that updates the state
 variables before handing over the execution control to some unknown
 address</p>
-<p><img src="code-2.png" /></p>
+<p><img src="codeblock-114.png" /></p>
 <p>By shifting the (<code>balances[msg.sender] = 0;</code>) before the
 external call, this way the attacker contract won’t be able to take
 advantage of later state change since the balance will already be set to
@@ -119,12 +119,12 @@ advantage of later state change since the balance will already be set to
 is a simple boolean flag that locks the contract during execution,
 preventing any reentrant calls.</p>
 <p>Here’s how you can implement it manually:</p>
-<p><img src="code-3.png" /></p>
+<p><img src="codeblock-15.png" /></p>
 <p>Alternatively, you can use <strong>OpenZeppelin’s
 ReentrancyGuard</strong> to handle this for you. Simply inherit the
 <code>ReentrancyGuard</code> contract and use the
 <code>nonReentrant</code> modifier</p>
-<p><img src="code-4.png" /></p>
+<p><img src="codeblock-16.png" /></p>
 <p>The <code>nonReentrant</code> modifier ensures that the
 <code>withdraw()</code> function cannot be called again until it
 completes execution.</p>

@@ -16,13 +16,13 @@ toc-title: Contents
 
 If a contract relies on accounting of funds, an Attacker can easily disrupt the flow by force feeding `ETH` into the contract. There are multiple ways a smart contract can receive Ether, One of them is **payable reveive()** should be present if no then **payable fallback()**
 
-![](carbon.png)
+![](codeblock-0.png)
 
 ## Understanding problem
 
 Consider this Crowd funding contract for example
 
-![](carbon-1.png)
+![](codeblock-1.png)
 
 - **require(address(this).balancer == 100 ether, "Funding not reached")** the above contract relies on exact comparisons to the contract's Ether balance
 - The contract's logic seemingly disallows direct payments and tells to use invest function instead.
@@ -31,7 +31,7 @@ Consider this Crowd funding contract for example
 
 Force feeding Ether
 
-![](carbon-2.png)
+![](codeblock-2.png)
 
 - **selfdestruct** opcode sends all remaining Ether stored in the contract to a designated address.
 - An attacke can send as little as **1 wei** through **selfdestruct** and using above contract's address as target
