@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Uncontrolled Delegatecall</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Uncontrolled Delegatecall</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#introduction" id="toc-introduction">Introduction</a>
+    <ul class="incremental">
+    <li><a href="#flow" id="toc-flow">Flow</a></li>
+    </ul></li>
+    <li><a href="#mitigation" id="toc-mitigation">Mitigation</a></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="introduction">Introduction</h2>
+<p>In Solidity, <strong>delegatecall</strong> is a low-level function
+that allows a contract to borrow the functionality of another contract
+while preserving its own storage. This can be dangerous if not
+controlled properly. Let’s look at an example where an uncontrolled
+<strong>delegatecall</strong> can be exploited to change the
+<strong>owner</strong> variable.</p>
+<p><img src="codeblock-12.png" /></p>
+<h3 id="flow">Flow</h3>
+<ul class="incremental">
+<li>The <strong>delegateCall()</strong> function in the
+<strong>Victim</strong> contract was intended to call functions in the
+<strong>Victim</strong> contract’s implementation, but the attacker
+exploits it via the <strong>Attack</strong> contract.</li>
+<li>The <strong>attack()</strong> function passes the attack contract’s
+address and the attacker’s address, type-cast to
+<strong>uint256</strong>, as arguments.</li>
+<li>This triggers the <strong>delegatecall()</strong> in the
+<strong>Victim</strong> contract, which makes a delegate call to
+<strong>setNum()</strong> in the attack contract.</li>
+<li>Even though <strong>setNum()</strong> accepts a
+<strong>uint256</strong> argument, the attacker’s address is type-cast
+to match the parameter type.</li>
+<li>Since <strong>delegatecall()</strong> preserves the storage of the
+calling contract (in this case, <strong>Victim</strong>), the
+<strong>owner</strong> variable in the <strong>Victim</strong> contract
+is modified, not in the <strong>Attack</strong> contract.</li>
+</ul>
+<h2 id="mitigation">Mitigation</h2>
+<p>Avoid using <strong>delegatecall()</strong> unless absolutely
+necessary, or restrict who can invoke it and which contracts it can
+call.</p>
+  <script src="index.js"></script>
+</body>
+</html>
