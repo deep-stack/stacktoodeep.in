@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Transparency</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Transparency</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#introduction"
+    id="toc-introduction">Introduction</a></li>
+    <li><a href="#mitigation" id="toc-mitigation">Mitigation</a>
+    <ul class="incremental">
+    <li><a href="#commit-reveal" id="toc-commit-reveal">Commit +
+    Reveal</a></li>
+    </ul></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="introduction">Introduction</h2>
+<p>Every Ethereum transaction that gets processed is publicly
+accessible, including transactions visible within the open mempool.
+While having full visibility into another user’s actions can sometimes
+lead to malicious behavior, this inherent level of transparency also
+provides significant benefits in terms of accountability and
+convenience, for example front/back-running transactions on DeFi,
+auction sniping, etc</p>
+<h2 id="mitigation">Mitigation</h2>
+<h3 id="commit-reveal">Commit + Reveal</h3>
+<p>The commit-reveal pattern is a simple solution that protocols
+sometimes implement to allow users to commit to a concealed on-chain
+action that will be executed later. It often involves the protocol to
+having separate “commit” and “reveal” phases, with users making two
+transactions across them<br></p>
+<p><strong>The commit phase</strong><br> In commit phase a user first
+sends a “commit” transaction to the protocol, which binds them to
+performing a specific action, the hash of the action details and some
+large, random, user-chosen salt value (e.g., commit = keccak256(ACTION,
+SALT)). Because hashes are unique™ and non-reversible, without knowing
+the salt value it’s practically impossible to discover which action was
+chosen to generate the commit hash <img src="codeblock-5.png" /></p>
+<p><strong>The reveal phase</strong><br> In reveal phase users will
+submit a second, “reveal” transaction to the protocol, providing the
+salt and action they used to generate the prior commit hash. The
+protocol will compute the commit hash and, only if it matches the hash
+from the commit phase, perform the user’s chosen action <img
+src="codeblock-6.png" /></p>
+  <script src="index.js"></script>
+</body>
+</html>
