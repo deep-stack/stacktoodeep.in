@@ -86,7 +86,7 @@ clean() {
 # Parse command-line arguments
 if [ "$1" == "clean" ]; then
   clean
-elif [ "$1" == "move-codeblocks" ]; then
+elif [ "$1" == "move-files" ]; then
   move_files
 elif [ "$1" == "build-html" ]; then
   build_html
