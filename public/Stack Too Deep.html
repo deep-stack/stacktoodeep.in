@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Stack Too Deep</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Stack Too Deep</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#introduction"
+    id="toc-introduction">Introduction</a></li>
+    <li><a href="#workarounds" id="toc-workarounds">Workarounds</a>
+    <ul class="incremental">
+    <li><a href="#ir-codegen" id="toc-ir-codegen">IR codegen</a></li>
+    <li><a href="#internal-functions"
+    id="toc-internal-functions">Internal Functions</a></li>
+    <li><a href="#block-scoping" id="toc-block-scoping">Block
+    Scoping</a></li>
+    <li><a href="#using-struct" id="toc-using-struct">Using
+    struct</a></li>
+    </ul></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h1 id="introduction">Introduction</h1>
+<p>The EVM is a stack-based architecture, meaning most instructions pull
+their arguments from the top of a stack, a special memory area used for
+handling working data like local variables.<br> In Solidity, by default,
+most function parameters and variables are stored on this stack and
+manipulated during execution. The stack can hold up to 1024 values, each
+32 bytes in size, but only the top 32 slots are directly accessible at
+any given time. As a result, in more complex functions, the compiler may
+run into errors if variables fall outside this easily accessible part of
+the stack, causing compilation to fail. <img
+src="codeblock-17.png" /></p>
+<h1 id="workarounds">Workarounds</h1>
+<h3 id="ir-codegen">IR codegen</h3>
+<p>Newer versions of Solidity suggest compiling using –via-ir upon
+facing a stack too deep error. The IR codegen is capable of autonomously
+moving stack variables to memory to get around stack size limitations.
+This flag can be passed in many development tools like Hardhat and
+Foundry.</p>
+<p><img src="codeblock-18.png" /></p>
+<h2 id="internal-functions">Internal Functions</h2>
+<p>By batching 3 variables at a time using an internal function, you
+avoid the stack too deep error.</p>
+<p><img src="codeblock-19.png" /></p>
+<h2 id="block-scoping">Block Scoping</h2>
+<p>Block scoping lets you encapsulate logic, reducing stack usage and
+allowing the creation of new variables that are only relevant within the
+block.</p>
+<p><img src="codeblock-20.png" /></p>
+<h2 id="using-struct">Using struct</h2>
+<p>Using structs, you can declare variables that live in memory instead
+of the stack. When using it this way, only a pointer needs to be stored
+on the stack, pointing to the memory offset of the struct, so several
+variables can be effectively collapsed into a single struct entry.</p>
+<p><img src="codeblock-21.png" /></p>
+  <script src="index.js"></script>
+</body>
+</html>
