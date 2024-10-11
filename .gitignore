@@ -1,2 +1,5 @@
 node_modules
-public/index.html
+!public/index.css
+!public/index.js
+!public/reset.css
+public/*
