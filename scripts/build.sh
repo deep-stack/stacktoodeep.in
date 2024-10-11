@@ -3,39 +3,56 @@
 # Get the directory of the script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Function to copy the files from src to public
+# Function to move assets from to public directory except markdown files
 move_files() {
   # Define the source and destination directories
   SOURCE_DIR="$SCRIPT_DIR/../src"
   DEST_DIR="$SCRIPT_DIR/../public"
 
   # Copy all files and directories except for .md files from src to public
-  rsync -av --exclude='*.md' "$SOURCE_DIR/" "$DEST_DIR"
+  rsync -av --exclude='*.md' --exclude='blogs/pages' "$SOURCE_DIR/" "$DEST_DIR"
 
   echo "All files and folders except .md files have been copied from src to public."
 }
 
 
-# Function to generate HTML files
+# Function to generate HTML files for index and blogs
 build_html() {
-  echo "Generating HTML files for all markdown file."
+  echo "Generating HTML files for each blog..."
   
-  SRC_DIR="$SCRIPT_DIR/../src"
+  BLOGS_DIR="$SCRIPT_DIR/../src/blogs/pages"
   PUBLIC_DIR="$SCRIPT_DIR/../public"
+  
+  # Generate HTML for index.md
+  echo "Generating index.html from index.md..."
+  pandoc --toc -s --css "reset.css" --css "index.css" \
+    -i "$SCRIPT_DIR/../src/index.md" -o "$SCRIPT_DIR/../public/index.html" --template="$SCRIPT_DIR/../templates/index.html"
+  
+  if [ $? -eq 0 ]; then
+    echo "public/index.html generated successfully."
+  else
+    echo "Error: Failed to generate public/index.html."
+    return 1
+  fi
 
-  # Iterate over all markdown files in the src directory
-  for md_file in "$SRC_DIR"/*.md; do
+  if [ ! -d "$BLOGS_DIR" ]; then
+    echo "Error: $BLOGS_DIR does not exist. Aborting."
+    exit 1
+  fi
+
+  # Iterate over all .md files in the blogs directory
+  for md_file in "$BLOGS_DIR"/*.md; do
     filename=$(basename -- "$md_file")
     name="${filename%.*}"
     
     # Generate HTML for each markdown file
     pandoc --toc -s --css "reset.css" --css "index.css" \
-      -i "$md_file" -o "$PUBLIC_DIR/$name.html" --template="$SCRIPT_DIR/../templates/index.html"
+      -i "$md_file" -o "$PUBLIC_DIR/$name.html" --template="$SCRIPT_DIR/../templates/blogs.html"
     
     if [ $? -eq 0 ]; then
-      echo "public/$name.html generated successfully."  
+      echo "$PUBLIC_DIR/$name.html generated successfully."  
     else
-      echo "Error: Failed to generate public/$name.html."
+      echo "Error: Failed to generate $PUBLIC_DIR/$name.html."
       return 1
     fi
   done
@@ -48,7 +65,7 @@ clean() {
 
   for file in "$PUBLIC_DIR"/*; do
     # Skip the specific files
-    if [[ "$file" == *.css || "$file" == *.js ]]; then
+    if [[ "$file" == "$PUBLIC_DIR/reset.css" || "$file" == "$PUBLIC_DIR/index.js" || "$file" == "$PUBLIC_DIR/index.css" ]]; then
       echo "Skipping: $file"
       continue
     fi
