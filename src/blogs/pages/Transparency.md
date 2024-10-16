@@ -24,8 +24,8 @@ The commit-reveal pattern is a simple solution that protocols sometimes implemen
 
 **The commit phase**<br>
 In commit phase a user first sends a "commit" transaction to the protocol, which binds them to performing a specific action, the hash of the action details and some large, random, user-chosen salt value (e.g., commit = keccak256(ACTION, SALT)). Because hashes are unique™ and non-reversible, without knowing the salt value it's practically impossible to discover which action was chosen to generate the commit hash
-![](codeblock-5.png)
+![](blogs/codeblocks/codeblock-5.png)
 
 **The reveal phase**<br>
 In reveal phase users will submit a second, "reveal" transaction to the protocol, providing the salt and action they used to generate the prior commit hash. The protocol will compute the commit hash and, only if it matches the hash from the commit phase, perform the user's chosen action
-![](codeblock-6.png)
+![](blogs/codeblocks/codeblock-6.png)
