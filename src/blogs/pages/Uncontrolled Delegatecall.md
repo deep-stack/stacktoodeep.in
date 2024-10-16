@@ -16,7 +16,7 @@ toc-title: Contents
 
 In Solidity, **delegatecall** is a low-level function that allows a contract to borrow the functionality of another contract while preserving its own storage. This can be dangerous if not controlled properly. Let’s look at an example where an uncontrolled **delegatecall** can be exploited to change the **owner** variable.
 
-![](codeblock-12.png)
+![](blogs/codeblocks/codeblock-12.png)
 
 ### Flow
 

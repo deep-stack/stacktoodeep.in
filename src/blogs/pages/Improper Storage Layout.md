@@ -18,12 +18,12 @@ One common problem that arises when using [proxies](https://medium.com/@social_4
 
 ### Storage Collision Between Proxy and Implementation
 
-![](codeblock-7.png) ![](codeblock-8.png) ![](codeblock-9.png)
+![](blogs/codeblocks/codeblock-7.png) ![](blogs/codeblocks/codeblock-8.png) ![](blogs/codeblocks/codeblock-9.png)
 
 ### Storage Collision Between Implementation Versions
 
 Storage collisions can also occur between different versions of an implementation contract<br>
-![](codeblock-10.png)
+![](blogs/codeblocks/codeblock-10.png)
 
 ## Mitigation
 
