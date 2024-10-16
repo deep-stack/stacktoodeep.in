@@ -25,7 +25,7 @@ toc-title: Contents
 
 ## Example code
 
-![](codeblock-3.png)
+![](blogs/codeblocks/codeblock-3.png)
 
 ### Flow
 
