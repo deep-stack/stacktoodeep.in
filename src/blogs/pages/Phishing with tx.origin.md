@@ -18,7 +18,7 @@ toc-title: Contents
 
 If there are multiple function invocations along different contracts in certain chain of transactions, tx.origin will always refer to the EOA that initiated it, no matter the stack of contracts involved.
 
-![](codeblock-4.png)
+![](blogs/codeblocks/codeblock-4.png)
 In attacks involving **tx.origin**, the attacker deceives the owner of a vulnerable contract into performing a transaction that could be a contract disguised as a wallet where the **receive()** is triggered having malicious code in it
 
 ## Mitigation
