@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Overriding in Solidity</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Overriding in Solidity</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#function-overriding"
+    id="toc-function-overriding">Function Overriding</a></li>
+    <li><a href="#state-variable-overriding"
+    id="toc-state-variable-overriding">State Variable
+    Overriding</a></li>
+    <li><a href="#abstract-contracts"
+    id="toc-abstract-contracts">Abstract Contracts</a></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="function-overriding">Function Overriding</h2>
+<p>Functions that don’t have an implementation must be marked as virtual
+to indicate that derived contracts are allowed to override them</p>
+<p>Contract containing function without implementation should be marked
+abstract</p>
+<p>In interfaces, you don’t need to mark functions as virtual since they
+are implicitly virtual, meaning they are always expected to be
+implemented by other contracts.</p>
+<p><a
+href="https://portal.wireit.in/uploads/images/gallery/2024-10/FzCzFi910pPFMjrM-image-1728034197138.png"><img
+src="https://portal.wireit.in/uploads/images/gallery/2024-10/scaled-1680-/FzCzFi910pPFMjrM-image-1728034197138.png" /></a></p>
+<p>Example code</p>
+<p><img src="codeblock-22.png" /></p>
+<p>Before Solidity 0.8.8 the override keyword was required every time
+you overrode a function from an interface or abstract contract, from
+Solidity 0.8.8: If a function is defined in a single base (e.g., an
+interface or abstract contract), the override keyword is no longer
+required. However, when multiple inheritance is involved (i.e., the same
+function exists in multiple base contracts), the override keyword is
+still required to specify which base functions are being overridden.</p>
+<p><a
+href="https://portal.wireit.in/uploads/images/gallery/2024-10/IlSFLABCPbMGNJuS-image-1728275316653.png"><img
+src="https://portal.wireit.in/uploads/images/gallery/2024-10/scaled-1680-/IlSFLABCPbMGNJuS-image-1728275316653.png" /></a></p>
+<p>Example code</p>
+<p>solidity &gt;=0.8.8, no need to mention override when overriding a
+function</p>
+<p><img src="codeblock-23.png" /></p>
+<p>When function is defined in multiple bases, override must be
+mentioned</p>
+<p><img src="codeblock-24.png" /></p>
+<h2 id="state-variable-overriding">State Variable Overriding</h2>
+<p><a
+href="https://portal.wireit.in/uploads/images/gallery/2024-10/IlSFLABCPbMGNJuS-image-1728275316653.png"><img
+src="https://portal.wireit.in/uploads/images/gallery/2024-10/scaled-1680-/IlSFLABCPbMGNJuS-image-1728275316653.png" /></a></p>
+<p>Example code</p>
+<p><img src="codeblock-25.png" /></p>
+<h2 id="abstract-contracts">Abstract Contracts</h2>
+<p><a
+href="https://portal.wireit.in/uploads/images/gallery/2024-10/oP00IEaUBR3ZR9x6-image-1728278642005.png"><img
+src="https://portal.wireit.in/uploads/images/gallery/2024-10/scaled-1680-/oP00IEaUBR3ZR9x6-image-1728278642005.png" /></a></p>
+<p>Example code</p>
+<p><img src="codeblock-26.png" /></p>
+<p>This would throw an error</p>
+  <script src="index.js"></script>
+</body>
+</html>

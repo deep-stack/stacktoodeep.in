@@ -15,3 +15,4 @@ lang: en
 - [Improper Storage Layout](Improper%20Storage%20Layout.html)
 - [Uncontrolled Delegatecall](Uncontrolled%20Delegatecall.html)
 - [Stack Too Deep](Stack%20Too%20Deep.html)
+- [Overriding in Solidity](Overriding%20in%20Solidity.html)
