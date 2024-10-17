@@ -17,3 +17,5 @@ lang: en
 - [Stack Too Deep](Stack%20Too%20Deep.html)
 - [Overriding in Solidity](Overriding%20in%20Solidity.html)
 - [Overflow Bugs in Solidity](Overflow%20Bugs%20in%20Solidity.html)
+- [Edge Cases in Solidity Arithmetic](Edge%20Cases%20in%20Solidity%20Arithmetic.html)
+- [Error Semantics in Solidity](Error%20Semantics%20in%20Solidity.html)

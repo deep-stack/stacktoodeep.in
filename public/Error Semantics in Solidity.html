@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Error Semantics in Solidity</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Error Semantics in Solidity</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#function-as-second-argument-in-require"
+    id="toc-function-as-second-argument-in-require">Function as second
+    argument in require()</a></li>
+    <li><a href="#throw" id="toc-throw">Throw()</a></li>
+    <li><a href="#functions-reverting-with-same-error-message"
+    id="toc-functions-reverting-with-same-error-message">Functions
+    reverting with same error message</a></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="function-as-second-argument-in-require">Function as second
+argument in require()</h2>
+<p>The arguments passed to the require function in Solidity are
+evaluated unconditionally, regardless of whether the condition is true
+or false.</p>
+<p>This means that any expressions, including function calls, are
+executed even if the condition ultimately fails, and the require check
+causes the transaction to revert.</p>
+<p><img src="codeblock-33.png" /></p>
+<p><strong>value</strong> will be update to <strong>100</strong> before
+revert back to <strong>0</strong>, you can see the <strong>Function f
+called</strong> getting returned in the console.</p>
+<h2 id="throw">Throw()</h2>
+<p>Solidity previously had a keyword called throw, which was used to
+revert the execution of a transaction and roll back all changes. When
+throw was used, it would:</p>
+<ul class="incremental">
+<li>Revert the state to its original form before the transaction.</li>
+<li>Refund all remaining gas to the caller.</li>
+</ul>
+<p>However, throw was deprecated in version 0.4.13 and eventually
+removed in version 0.5.0. It was replaced by the more explicit and
+flexible revert() function.</p>
+<p><img src="codeblock-34.png" /></p>
+<h2 id="functions-reverting-with-same-error-message">Functions reverting
+with same error message</h2>
+<p>It is possible for a contract to revert with different errors of the
+same name or even with errors defined in different places that are
+indistinguishable by the caller. For the outside, i.e. the ABI, only the
+name of the error is relevant, not the contract or file where it is
+defined.</p>
+<p><img src="codeblock-35.png" /></p>
+<p>Here both <strong>func1</strong> and <strong>func2</strong> reverts
+with same error which might create confusion when interacting with the
+contract externally</p>
+  <script src="index.js"></script>
+</body>
+</html>

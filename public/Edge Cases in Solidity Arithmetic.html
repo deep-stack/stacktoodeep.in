@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Edge Cases in Solidity Arithmetic</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Edge Cases in Solidity Arithmetic</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#divisionmodulo-by-zero"
+    id="toc-divisionmodulo-by-zero">Division/Modulo by zero</a></li>
+    <li><a href="#right-shift-for-negative-integer"
+    id="toc-right-shift-for-negative-integer">Right Shift for negative
+    integer</a></li>
+    <li><a href="#division-on-integer-literals"
+    id="toc-division-on-integer-literals">Division on integer
+    literals</a></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="divisionmodulo-by-zero">Division/Modulo by zero</h2>
+<p>Even though you can disable certain checks (like overflow/underflow)
+in Solidity using the unchecked block, the division by zero and modulo
+by zero checks are always enforced by the Solidity compiler to prevent
+runtime errors. If such a division or modulo operation is encountered,
+the transaction will revert regardless of the use of unchecked.</p>
+<p><img src="codeblock-30.png" /></p>
+<h2 id="right-shift-for-negative-integer">Right Shift for negative
+integer</h2>
+<p>When using the right shift operator (&gt;&gt;) with negative numbers,
+the result was equivalent to the mathematical expression x / 2^y,
+rounded towards zero (also known as rounding up for negative numbers).
+This means the result would ignore the fractional part and move closer
+to zero.</p>
+<p>Below example code would give output as <strong>-2</strong> for
+solidity &lt; 0.5.0 and <strong>-3</strong> for solidity &gt; 0.5.0</p>
+<p><img src="codeblock-31.png" /></p>
+<p>The behavior was changed to conform with common expectations in
+programming languages, where right shifts for negative numbers use
+rounding towards negative infinity (or rounding down). This means that
+after the shift, the result is always rounded down to the next lowest
+integer.</p>
+<h2 id="division-on-integer-literals">Division on integer literals</h2>
+<p>The key point is that division on integer literals in Solidity still
+produces a truncated result, but starting with version 0.4.0, the
+division result is internally treated as a rational number if it’s used
+in further computations.</p>
+<p>Below example code would give output as <strong>20</strong> for
+solidity &lt; 0.4.0 and <strong>25</strong> for solidity &gt; 0.4.0</p>
+<p><img src="codeblock-32.png" /></p>
+  <script src="index.js"></script>
+</body>
+</html>
