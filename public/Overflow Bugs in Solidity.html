@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Overflow Bugs in Solidity</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .title {
+      text-align: left;
+      font-size: 2em;
+      margin-bottom: 0;
+    }
+    .subtitle {
+      text-align: left;
+      font-size: 1em;
+      color: #555;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" class="width-auto">
+      <h1 class="title">Overflow Bugs in Solidity</h1>
+    </td>
+  </tr>
+  <tr>
+    <th class="width-min">Organization</th>
+    <td class="width-auto">DeepStack Software Pvt. Ltd.</td>
+  </tr>
+  <tr>
+    <th class="width-min">Org URL</th>
+    <td class="width-auto"><a href="https://www.deepstacksoft.com">https://www.deepstacksoft.com</a></td>
+  </tr>
+  </tr>
+</table>
+<nav id="TOC" role="doc-toc">
+      <h2 id="toc-title">Contents</h2>
+    <ul class="incremental">
+    <li><a href="#insecure-arithmetic"
+    id="toc-insecure-arithmetic">Insecure Arithmetic</a></li>
+    <li><a href="#no-overflow-checks-for-shift-operations"
+    id="toc-no-overflow-checks-for-shift-operations">No overflow checks
+    for shift operations</a></li>
+    <li><a
+    href="#overflow-when-using-ternary-operator-and-array-subscript"
+    id="toc-overflow-when-using-ternary-operator-and-array-subscript">Overflow
+    when using Ternary operator and Array Subscript</a></li>
+    </ul>
+</nav>
+<nav>
+<a href="index.html"><button>Back</button></a>
+</nav>
+<p><strong>Posted on: 2024-09-18</strong></p>
+<h2 id="insecure-arithmetic">Insecure Arithmetic</h2>
+In Solidity versions below 0.8.0, unsigned integers (uint256) do not
+support negative numbers. If the subtraction causes an underflow, it
+will wrap around to a very large value instead of throwing an error. And
+if the addition is causing an overflow it will reset to zero
+<p>
+<p>Lets see the below example</p>
+<p><img src="codeblock-27.png" /></p>
+<ul class="incremental">
+<li>As you can see the soldility version being used here is below
+0.8.0</li>
+<li>In line 14, the require statement is supposed to ensure that value
+to be transfer should be less than or equal to the user’s balance</li>
+<li>If balances[msg.sender] = 100 and _value = 150, the subtraction will
+result in an underflow, causing balances[msg.sender] to wrap around to a
+very large number, close to 2^256 - 1.</li>
+</ul>
+<h2 id="no-overflow-checks-for-shift-operations">No overflow checks for
+shift operations</h2>
+<p>In Solidity, shift operations (&lt;&lt; for left shift and &gt;&gt;
+for right shift) do not perform overflow checks. This is in contrast to
+arithmetic operations (like addition, subtraction, multiplication),
+where overflow checks are done in recent Solidity versions (starting
+from 0.8.0). When performing a shift operation, the result is always
+truncated to fit within the variable’s data type (e.g., uint256 or
+int256). This means that bits that “fall off” during the shift are
+discarded, and no error is thrown if the result exceeds the maximum or
+minimum representable value.</p>
+<p><img src="codeblock-28.png" /></p>
+<h2
+id="overflow-when-using-ternary-operator-and-array-subscript">Overflow
+when using Ternary operator and Array Subscript</h2>
+<p>While most operators produce a literal expression when applied to
+literals, there are certain operators that do not follow this
+pattern:</p>
+<p>Ternary operator (… ? … : …),</p>
+<p>Array subscript (<array>[<index>]).</p>
+<p>You might expect expressions like 255 + (true ? 1 : 0) or 255 + [1,
+2, 3][0] to be equivalent to using the literal 256 directly, but in fact
+they are computed within the type uint8 and can overflow.</p>
+<p><img src="codeblock-29.png" /></p>
+  <script src="index.js"></script>
+</body>
+</html>

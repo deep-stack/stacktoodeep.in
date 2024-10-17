@@ -16,3 +16,4 @@ lang: en
 - [Uncontrolled Delegatecall](Uncontrolled%20Delegatecall.html)
 - [Stack Too Deep](Stack%20Too%20Deep.html)
 - [Overriding in Solidity](Overriding%20in%20Solidity.html)
+- [Overflow Bugs in Solidity](Overflow%20Bugs%20in%20Solidity.html)
